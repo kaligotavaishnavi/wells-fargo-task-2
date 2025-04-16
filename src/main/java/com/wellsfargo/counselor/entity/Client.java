@@ -2,34 +2,36 @@ package com.wellsfargo.counselor.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 
 @Entity
-public class Advisor {
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long advisorId;
+    private Long clientId;
 
     private String name;
     private String email;
     private String phone;
-    private String workingHours;
 
-    @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL)
-    private List<Client> clients;
+    @ManyToOne
+    @JoinColumn(name = "advisor_id", nullable = false)
+    private Advisor advisor;
 
-    public Advisor() {}
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+    private Portfolio portfolio;
 
-    public Advisor(String name, String email, String phone, String workingHours) {
+    public Client() {}
+
+    public Client(String name, String email, String phone, Advisor advisor) {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.workingHours = workingHours;
+        this.advisor = advisor;
     }
 
-    public Long getAdvisorId() {
-        return advisorId;
+    public Long getClientId() {
+        return clientId;
     }
 
     public String getName() {
@@ -56,19 +58,19 @@ public class Advisor {
         this.phone = phone;
     }
 
-    public String getWorkingHours() {
-        return workingHours;
+    public Advisor getAdvisor() {
+        return advisor;
     }
 
-    public void setWorkingHours(String workingHours) {
-        this.workingHours = workingHours;
+    public void setAdvisor(Advisor advisor) {
+        this.advisor = advisor;
     }
 
-    public List<Client> getClients() {
-        return clients;
+    public Portfolio getPortfolio() {
+        return portfolio;
     }
 
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
 }
